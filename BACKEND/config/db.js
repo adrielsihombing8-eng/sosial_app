@@ -1,16 +1,15 @@
 const mongoose = require('mongoose');
+const donevn = require('dotenv');
+donevn.config();
 
 const DBconnection = async() => {
     try{
-        await mongoose.connect("mongodb+srv://adrielsihombing8_db_user:hXkpU5SLAzAUfedL@cluster0.pul08ku.mongodb.net/SosialApp?appName=Cluster0",{
-            useNewUrlParser : true,
-            useUnifiedTopology : true
-        }
-        );
+        await mongoose.connect(process.env.MONGO_URL);
         console.log("connection succes!!!");
     }
     catch(error){
         console.log('error connction');
+        console.log(error)
     }
 }
 
