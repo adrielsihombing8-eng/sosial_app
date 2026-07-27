@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_instance/get_instance.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:sosial_app/app/Routes/routes.dart';
+import 'package:sosial_app/app/controller/login_controller.dart';
 
 class Loginscreen extends StatefulWidget {
   const Loginscreen({super.key});
@@ -11,33 +14,7 @@ class Loginscreen extends StatefulWidget {
 }
 
 class _LoginscreenState extends State<Loginscreen> {
-  var formkey = GlobalKey<FormState>();
-  final FocusNode emailFocusedNode = new FocusNode();
-  final FocusNode passwordFocusedNode = new FocusNode();
-  var emailController = new TextEditingController();
-  var passwordController = new TextEditingController();
-
-  bool emailFocused = false;
-  bool passwordFocused = false;
-  bool passwordIcons = true;
-
-  @override
-  void dispose() {
-    emailController.dispose();
-    passwordController.dispose();
-    super.dispose();
-  }
-
-  void Takedata() {
-    if (formkey.currentState!.validate()) {
-      String email = emailController.text.toString();
-      String password = passwordController.text.toString();
-      print('Login dengan $email');
-    } else {
-      print('Form belum valid');
-    }
-    //api login
-  }
+  final controller = Get.find<LoginController>();
 
   @override
   Widget build(BuildContext context) {
@@ -147,7 +124,7 @@ class _LoginscreenState extends State<Loginscreen> {
                 width: 400,
                 color: Colors.transparent,
                 child: Form(
-                  key: formkey,
+                  key: controller.formkey,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -157,67 +134,118 @@ class _LoginscreenState extends State<Loginscreen> {
                         "Email",
                         style: TextStyle(
                           fontSize: 15,
-                          color: Colors.blueAccent,
+                          color: controller.emailFocused.value
+                              ? Colors.blueAccent
+                              : Colors.black,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
                       TextFormField(
-                        controller: emailController,
+                        focusNode: controller.emailFocusedNode,
+                        controller: controller.emailController,
                         autovalidateMode: AutovalidateMode.onUserInteraction,
+                        onFieldSubmitted: (_) => FocusScope.of(
+                          context,
+                        ).requestFocus(controller.passwordFocusedNode),
                         validator: (value) {
-                          if (value == null || value.isEmpty) return 'Wajib isi';
+                          if (value == null || value.isEmpty)
+                            return 'Wajib isi';
                           if (!value.contains("@")) return 'email tidak valid';
                           return null;
                         },
                         decoration: InputDecoration(
                           filled: true,
-                          fillColor: Colors.white30,
+                          fillColor: controller.emailFocused.value
+                              ? Colors.white60
+                              : Colors.white30,
                           hintText: "alim@example.com",
                           hintStyle: TextStyle(color: Colors.grey),
                           contentPadding: EdgeInsets.symmetric(vertical: 15),
                         ),
                       ),
+                      SizedBox(height: 8),
+                      Obx(
+                        () => controller.emailMessage.value.isNotEmpty
+                            ? Padding(
+                                padding: EdgeInsets.only(bottom: 8),
+                                child: Text(
+                                  controller.emailMessage.value,
+                                  style: TextStyle(
+                                    color: Colors.red,
+                                    fontSize: 13,
+                                  ),
+                                ),
+                              )
+                            : SizedBox.shrink(),
+                      ),
+
                       SizedBox(height: 20),
                       Text(
                         "Password",
                         style: TextStyle(
                           fontSize: 15,
-                          color: Colors.blueAccent,
+                          color: controller.passwordFocused.value
+                              ? Colors.blueAccent
+                              : Colors.black,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
                       TextFormField(
-                        obscureText: passwordIcons,
-                        controller: passwordController,
+                        focusNode: controller.passwordFocusedNode,
+                        obscureText: controller.passwordIcons.value,
+                        controller: controller.passwordController,
                         autovalidateMode: AutovalidateMode.onUserInteraction,
+                        onFieldSubmitted: (_) =>
+                            controller.passwordFocusedNode.unfocus(),
                         validator: (value) {
                           if (value == null || value.isEmpty)
                             return 'Wajib di isi';
                           return null;
                         },
                         decoration: InputDecoration(
-                          fillColor: Colors.white30,
+                          fillColor: controller.passwordFocused.value
+                              ? Colors.white60
+                              : Colors.white30,
                           filled: true,
                           hintText: "*****",
                           hintStyle: TextStyle(color: Colors.grey),
                           contentPadding: EdgeInsets.symmetric(vertical: 15),
-                          suffixIcon: IconButton(onPressed: () => setState(() {
-                            passwordIcons = !passwordIcons;
-                          }), icon: Icon(passwordIcons ? Icons.visibility_off : Icons.visibility))
+                          suffixIcon: IconButton(
+                            onPressed: () => setState(() {
+                              controller.passwordIcons.value =
+                                  !controller.passwordIcons.value;
+                            }),
+                            icon: Icon(
+                              controller.passwordIcons.value
+                                  ? Icons.visibility_off
+                                  : Icons.visibility,
+                            ),
+                          ),
                         ),
                       ),
                       SizedBox(height: 70),
                       Container(
                         width: 150,
                         height: 40,
-                        child: ElevatedButton(
-                          onPressed: () {
-                            Takedata();
-                          },
-                          child: const Text("Login"),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.black,
-                            foregroundColor: Colors.white,
+                        child: Obx(
+                          () => ElevatedButton(
+                            onPressed: () {
+                              controller.isLoading.value? null : controller.Takedata();
+                            },
+                            child: controller.isLoading.value
+                                ? SizedBox(
+                                  height: 20,
+                                  width: 20,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                    color: Colors.white,
+                                  ),
+                                )
+                                : Text("Login"),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.black,
+                              foregroundColor: Colors.white,
+                            ),
                           ),
                         ),
                       ),
@@ -231,7 +259,7 @@ class _LoginscreenState extends State<Loginscreen> {
                             onPressed: () {
                               Get.toNamed("/REGISTER");
                             },
-                            child: Text("Sign Up")
+                            child: Text("Sign Up"),
                           ),
                         ],
                       ),

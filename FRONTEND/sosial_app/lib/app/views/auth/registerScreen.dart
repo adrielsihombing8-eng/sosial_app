@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/route_manager.dart';
 import 'package:get/state_manager.dart';
+import 'package:sosial_app/app/controller/register_controller.dart';
 
 class Registerscreen extends StatefulWidget {
   const Registerscreen({super.key});
@@ -10,52 +12,7 @@ class Registerscreen extends StatefulWidget {
 }
 
 class _RegisterscreenState extends State<Registerscreen> {
-  var formkey = GlobalKey<FormState>();
-  final FocusNode emailFocusedNode = new FocusNode();
-  final FocusNode passwordFocusedNode = new FocusNode();
-  final FocusNode konfirmasiFocusedNode = new FocusNode();
-  var emailController = new TextEditingController();
-  var passwordController = new TextEditingController();
-  var konfirmasiController = new TextEditingController();
-
-  bool emailFocused = false;
-  bool passwordFocused = false;
-  bool konfirmasiFocused = false;
-  bool passwordIcon = true;
-  bool konfirmasiIcon = true;
-
-  @override
-  void dispose() {
-    emailController.dispose();
-    passwordController.dispose();
-    konfirmasiController.dispose();
-    super.dispose();
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    emailFocusedNode.addListener(() {
-      setState(() => emailFocused = emailFocusedNode.hasFocus);
-    });
-    passwordFocusedNode.addListener(() {
-      setState(() => passwordFocused = passwordFocusedNode.hasFocus);
-    });
-    konfirmasiFocusedNode.addListener(() {
-      setState(() => konfirmasiFocused = konfirmasiFocusedNode.hasFocus);
-    });
-  }
-
-  void Takedata() {
-    if (formkey.currentState!.validate()) {
-      String email = emailController.text.toString();
-      String password = passwordController.text.toString();
-      print('Login dengan $email');
-    } else {
-      print('Form belum valid');
-    }
-    //api login
-  }
+  final controller = Get.find<RegisterController>();
 
   @override
   Widget build(BuildContext context) {
@@ -164,60 +121,154 @@ class _RegisterscreenState extends State<Registerscreen> {
                   width: 400,
                   color: Colors.transparent,
                   child: Form(
-                    key: formkey,
+                    key: controller.formkey,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        SizedBox(height: 60),
+                        SizedBox(height: 40),
                         Text(
-                          "Email",
+                          "username",
                           style: TextStyle(
                             fontSize: 15,
-                            color: Colors.blueAccent,
+                            color: controller.usernameFocused.value
+                                ? Colors.blueAccent
+                                : Colors.black,
                             fontWeight: FontWeight.w600,
                           ),
                         ),
                         TextFormField(
-                          focusNode: emailFocusedNode,
-                          controller: emailController,
+                          focusNode: controller.usernameFocusedNode,
+                          controller: controller.usernameController,
+                          onFieldSubmitted: (_) => FocusScope.of(
+                            context,
+                          ).requestFocus(controller.emailFocusedNode),
                           autovalidateMode: AutovalidateMode.onUserInteraction,
                           validator: (value) {
                             if (value == null || value.isEmpty)
                               return 'Wajib isi';
-                            if (!value.contains("@"))
-                              return 'email tidak valid';
                             return null;
                           },
                           decoration: InputDecoration(
                             filled: true,
-                            fillColor: Colors.white30,
+                            fillColor: controller.usernameFocused.value
+                                ? Colors.white60
+                                : Colors.white30,
                             hintText: "alim@example.com",
                             hintStyle: TextStyle(color: Colors.grey),
                             contentPadding: EdgeInsets.symmetric(vertical: 15),
                           ),
                         ),
+                        SizedBox(height: 8),
+                        Obx(
+                          () => controller.userMessage.value.isNotEmpty
+                              ? Padding(
+                                  padding: EdgeInsets.only(bottom: 8),
+                                  child: Text(
+                                    controller.userMessage.value,
+                                    style: TextStyle(
+                                      color: Colors.red,
+                                      fontSize: 13,
+                                    ),
+                                  ),
+                                )
+                              : SizedBox.shrink(),
+                        ),
+
+                        SizedBox(height: 20),
+                        Text(
+                          "Email",
+                          style: TextStyle(
+                            fontSize: 15,
+                            color: controller.emailFocused.value
+                                ? Colors.blueAccent
+                                : Colors.black,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        TextFormField(
+                          focusNode: controller.emailFocusedNode,
+                          controller: controller.emailController,
+                          onFieldSubmitted: (_) => FocusScope.of(
+                            context,
+                          ).requestFocus(controller.passwordFocusedNode),
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
+                          validator: (value) {
+                            if (value == null || value.isEmpty)
+                              return 'Wajib isi';
+                            if (!value.contains("@") &&
+                                !controller.hasMultipleAt(value))
+                              return 'email tidak valid';
+                            return null;
+                          },
+                          decoration: InputDecoration(
+                            filled: true,
+                            fillColor: controller.emailFocused.value
+                                ? Colors.white60
+                                : Colors.white30,
+                            hintText: "alim@example.com",
+                            hintStyle: TextStyle(color: Colors.grey),
+                            contentPadding: EdgeInsets.symmetric(vertical: 15),
+                          ),
+                        ),
+                        SizedBox(height: 8),
+                        Obx(
+                          () => controller.emailMessage.value.isNotEmpty
+                              ? Padding(
+                                  padding: EdgeInsets.only(bottom: 8),
+                                  child: Text(
+                                    controller.emailMessage.value,
+                                    style: TextStyle(
+                                      color: Colors.red,
+                                      fontSize: 13,
+                                    ),
+                                  ),
+                                )
+                              : SizedBox.shrink(),
+                        ),
+
                         SizedBox(height: 20),
                         Text(
                           "Password",
                           style: TextStyle(
                             fontSize: 15,
-                            color: Colors.blueAccent,
+                            color: controller.passwordFocused.value
+                                ? Colors.blueAccent
+                                : Colors.black,
                             fontWeight: FontWeight.w600,
                           ),
                         ),
                         TextFormField(
-                          obscureText: passwordIcon,
-                          focusNode: passwordFocusedNode,
-                          controller: passwordController,
+                          obscureText: controller.passwordIcon.value,
+                          focusNode: controller.passwordFocusedNode,
+                          controller: controller.passwordController,
+                          onFieldSubmitted: (_) => FocusScope.of(
+                            context,
+                          ).requestFocus(controller.konfirmasiFocusedNode),
                           autovalidateMode: AutovalidateMode.onUserInteraction,
                           validator: (value) {
                             if (value == null || value.isEmpty)
                               return 'Wajib di isi';
+                            if (!RegExp(r'[A-Z]').hasMatch(value)) {
+                              return 'harus ada huruf besar';
+                            }
+                            if (!RegExp(r'[a-z]').hasMatch(value)) {
+                              return 'harus ada huruf kecil';
+                            }
+                            if (!RegExp(r'[0-9]').hasMatch(value)) {
+                              return 'harus ada angka';
+                            }
+                            if (!RegExp(
+                              r'[!@#$%^&*(),.?":{}|<>]',
+                            ).hasMatch(value)) {
+                              return 'Harus ada simbol unik (!@#%\$, dll)';
+                            }
                             return null;
                           },
                           decoration: InputDecoration(
-                            fillColor: Colors.white30,
+                            fillColor: controller.passwordFocused.value
+                                ? Colors.white60
+                                : Colors.white30,
                             filled: true,
                             hintText: "*****",
                             hintStyle: TextStyle(
@@ -226,10 +277,11 @@ class _RegisterscreenState extends State<Registerscreen> {
                             ),
                             suffixIcon: IconButton(
                               onPressed: () => setState(() {
-                                passwordIcon = !passwordIcon;
+                                controller.passwordIcon.value =
+                                    !controller.passwordIcon.value;
                               }),
                               icon: Icon(
-                                passwordIcon
+                                controller.passwordIcon.value
                                     ? Icons.visibility_off
                                     : Icons.visibility,
                               ),
@@ -241,22 +293,31 @@ class _RegisterscreenState extends State<Registerscreen> {
                           "Konfirmasi",
                           style: TextStyle(
                             fontSize: 15,
-                            color: Colors.blueAccent,
+                            color: controller.konfirmasiFocused.value
+                                ? Colors.blueAccent
+                                : Colors.black,
                             fontWeight: FontWeight.w600,
                           ),
                         ),
                         TextFormField(
-                          obscureText: konfirmasiIcon,
-                          focusNode: konfirmasiFocusedNode,
-                          controller: konfirmasiController,
+                          obscureText: controller.konfirmasiIcon.value,
+                          onFieldSubmitted: (_) =>
+                              controller.konfirmasiFocusedNode.unfocus(),
+                          focusNode: controller.konfirmasiFocusedNode,
+                          controller: controller.konfirmasiController,
                           autovalidateMode: AutovalidateMode.onUserInteraction,
                           validator: (value) {
                             if (value == null || value.isEmpty)
                               return 'Wajib di isi';
+                            if (value != controller.passwordController.text) {
+                              return 'Invalid Confirmation';
+                            }
                             return null;
                           },
                           decoration: InputDecoration(
-                            fillColor: Colors.white30,
+                            fillColor: controller.konfirmasiFocused.value
+                                ? Colors.white60
+                                : Colors.white30,
                             filled: true,
                             hintText: "*****",
                             hintStyle: TextStyle(
@@ -265,13 +326,14 @@ class _RegisterscreenState extends State<Registerscreen> {
                             ),
                             suffixIcon: IconButton(
                               icon: Icon(
-                                konfirmasiIcon
+                                controller.konfirmasiIcon.value
                                     ? Icons.visibility_off
                                     : Icons.visibility,
                                 color: Colors.grey[700],
                               ),
                               onPressed: () => setState(
-                                () => konfirmasiIcon = !konfirmasiIcon,
+                                () => controller.konfirmasiIcon.value =
+                                    !controller.konfirmasiIcon.value,
                               ),
                             ),
                           ),
@@ -280,14 +342,25 @@ class _RegisterscreenState extends State<Registerscreen> {
                         Container(
                           width: 150,
                           height: 40,
-                          child: ElevatedButton(
-                            onPressed: () {
-                              Takedata();
-                            },
-                            child: const Text("Register"),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.black,
-                              foregroundColor: Colors.white,
+                          child: Obx(
+                            () => ElevatedButton(
+                              onPressed: () {
+                                controller.Takedata();
+                              },
+                              child: controller.isLoading.value
+                                  ? SizedBox(
+                                      width: 20,
+                                      height: 20,
+                                      child: CircularProgressIndicator(
+                                        strokeWidth: 2,
+                                        color: Colors.white,
+                                      ),
+                                    )
+                                  : const Text("Register"),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.black,
+                                foregroundColor: Colors.white,
+                              ),
                             ),
                           ),
                         ),

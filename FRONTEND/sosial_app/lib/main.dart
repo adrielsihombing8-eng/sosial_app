@@ -1,21 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sosial_app/app/Routes/appPages.dart';
 import 'package:sosial_app/app/Routes/routes.dart';
+import 'package:sosial_app/app/services/auth.dart';
 import 'package:sosial_app/app/views/auth/loginScreen.dart';
 
 
-void main() {
-  runApp(const MainApp());
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  SharedPreferences pref = await SharedPreferences.getInstance();
+  String? token = pref.getString("token");
+  runApp(MainApp(token: token));
 }
 
 class MainApp extends StatelessWidget {
-  const MainApp({super.key});
+  final String? token;
+  const MainApp({ required this.token, super.key});
+
+  bool get isLoggedIn => token != null && !JwtDecoder.isExpired(token!);
 
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      initialRoute: routes.INITIAL,
+      initialRoute: isLoggedIn? routes.SPLASHCHECKER : routes.INITIAL,
       getPages: Apppages.routes,
       theme: ThemeData(
         primarySwatch: Colors.blue,
@@ -28,3 +37,4 @@ class MainApp extends StatelessWidget {
     );
   }
 }
+
