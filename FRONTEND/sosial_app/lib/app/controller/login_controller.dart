@@ -3,8 +3,10 @@ import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:sosial_app/app/model/authModel.dart';
 import 'package:sosial_app/app/services/api.dart';
+import 'package:sosial_app/app/services/auth_controller.dart';
 
 class LoginController extends GetxController {
+  var authController = Get.find<AuthController>();
   var formkey = GlobalKey<FormState>();
   final FocusNode emailFocusedNode = new FocusNode();
   final FocusNode passwordFocusedNode = new FocusNode();
@@ -42,6 +44,10 @@ class LoginController extends GetxController {
           username: apiLogin['username'],
           email: apiLogin['email'],
         );
+
+        authController.setUser(models);
+
+        Get.toNamed("/HOME");
       }
       else{
         emailMessage.value = 'email tidak ada';

@@ -66,7 +66,7 @@ class _LoginscreenState extends State<Loginscreen> {
           ),
 
           Positioned(
-            top: 150,
+            top: 200,
             left: MediaQuery.of(context).size.width / 2 - 45,
             child: Container(
               height: 90,
@@ -80,7 +80,7 @@ class _LoginscreenState extends State<Loginscreen> {
           ),
 
           Positioned(
-            top: 155,
+            top: 205,
             left: MediaQuery.of(context).size.width / 2 - 40,
             child: Container(
               height: 80,
@@ -99,7 +99,7 @@ class _LoginscreenState extends State<Loginscreen> {
           ),
 
           Positioned(
-            top: 250,
+            top: 290,
             left: MediaQuery.of(context).size.width / 2 - 80,
             child: Container(
               height: 100,
@@ -118,10 +118,10 @@ class _LoginscreenState extends State<Loginscreen> {
 
           Positioned(
             top: 280,
-            left: MediaQuery.of(context).size.width / 2 - 200,
+            left: MediaQuery.of(context).size.width / 2 - 150,
             child: SingleChildScrollView(
               child: Container(
-                width: 400,
+                width: 300,
                 color: Colors.transparent,
                 child: Form(
                   key: controller.formkey,
@@ -129,7 +129,7 @@ class _LoginscreenState extends State<Loginscreen> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      SizedBox(height: 60),
+                      SizedBox(height: 70),
                       Text(
                         "Email",
                         style: TextStyle(
@@ -223,7 +223,7 @@ class _LoginscreenState extends State<Loginscreen> {
                           ),
                         ),
                       ),
-                      SizedBox(height: 70),
+                      SizedBox(height: 40),
                       Container(
                         width: 150,
                         height: 40,

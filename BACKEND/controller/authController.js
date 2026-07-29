@@ -51,7 +51,7 @@ exports.login = async (req, res, next) => {
     }
 };
 
-//auth
+//auth atau middleware
 exports.auth = async (req, res, next) => {
     const authHeader = req.headers["authorization"];
     if (!authHeader) {
@@ -133,3 +133,4 @@ exports.refresh = async (req, res, next) => {
         return res.status(500).json({ status: false, message: "Server error" });
     }
 };
+

@@ -2,8 +2,10 @@ import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:sosial_app/app/model/authModel.dart';
 import 'package:sosial_app/app/services/api.dart';
+import 'package:sosial_app/app/services/auth_controller.dart';
 
 class RegisterController extends GetxController {
+  final authController = Get.find<AuthController>();
   var formkey = GlobalKey<FormState>();
   final FocusNode usernameFocusedNode = new FocusNode();
   final FocusNode emailFocusedNode = new FocusNode();
@@ -46,6 +48,9 @@ class RegisterController extends GetxController {
 
   @override
   void onInit() {
+    usernameFocusedNode.addListener(
+      () => usernameFocused.value = usernameFocusedNode.hasFocus,
+    );
     emailFocusedNode.addListener(
       () => emailFocused.value = emailFocusedNode.hasFocus,
     );
@@ -86,6 +91,8 @@ class RegisterController extends GetxController {
           username: userData['username'],
           email: userData['email'],
         );
+
+        authController.setUser(userBio);
 
         Get.toNamed("/HOME");
       } else if (userData['status'] == 401) {

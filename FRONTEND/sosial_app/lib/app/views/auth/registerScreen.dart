@@ -24,7 +24,7 @@ class _RegisterscreenState extends State<Registerscreen> {
         child: Stack(
           children: [
             Positioned(
-              top: 0,
+              top: -40,
               child: Container(
                 height: 300,
                 width: MediaQuery.of(context).size.width,
@@ -36,34 +36,32 @@ class _RegisterscreenState extends State<Registerscreen> {
                 ),
               ),
             ),
-
+      
             Positioned(
-              top: 200,
-              child: SingleChildScrollView(
-                child: ConstrainedBox(
-                  constraints: BoxConstraints(
-                    minWidth: MediaQuery.of(context).size.width,
-                    minHeight:
-                        MediaQuery.of(context).size.height -
-                        MediaQuery.of(context).padding.top,
+              top: 150,
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  minWidth: MediaQuery.of(context).size.width,
+                  minHeight:
+                      MediaQuery.of(context).size.height -
+                      MediaQuery.of(context).padding.top,
+                ),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(25),
                   ),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(25),
-                    ),
-                    child: Column(
-                      children: [
-                        //isi form
-                      ],
-                    ),
+                  child: Column(
+                    children: [
+                      //isi form
+                    ],
                   ),
                 ),
               ),
             ),
-
+      
             Positioned(
-              top: 150,
+              top: 100,
               left: MediaQuery.of(context).size.width / 2 - 45,
               child: Container(
                 height: 90,
@@ -75,9 +73,9 @@ class _RegisterscreenState extends State<Registerscreen> {
                 ),
               ),
             ),
-
+      
             Positioned(
-              top: 155,
+              top: 105,
               left: MediaQuery.of(context).size.width / 2 - 40,
               child: Container(
                 height: 80,
@@ -94,13 +92,13 @@ class _RegisterscreenState extends State<Registerscreen> {
                 ),
               ),
             ),
-
+      
             Positioned(
-              top: 250,
-              left: MediaQuery.of(context).size.width / 2 - 80,
+              top: 200,
+              left: MediaQuery.of(context).size.width / 2 - 90,
               child: Container(
-                height: 100,
-                width: 180,
+                height: 80,
+                width: 200,
                 color: Colors.transparent,
                 child: Text(
                   "Hallo Dear👋",
@@ -112,13 +110,14 @@ class _RegisterscreenState extends State<Registerscreen> {
                 ),
               ),
             ),
-
+      
             Positioned(
-              top: 300,
-              left: MediaQuery.of(context).size.width / 2 - 200,
+              top: 250,
+              bottom: 10,
+              left: MediaQuery.of(context).size.width / 2 - 150,
               child: SingleChildScrollView(
                 child: Container(
-                  width: 400,
+                  width: 300,
                   color: Colors.transparent,
                   child: Form(
                     key: controller.formkey,
@@ -126,7 +125,7 @@ class _RegisterscreenState extends State<Registerscreen> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        SizedBox(height: 40),
+                        SizedBox(height: 5),
                         Text(
                           "username",
                           style: TextStyle(
@@ -174,8 +173,8 @@ class _RegisterscreenState extends State<Registerscreen> {
                                 )
                               : SizedBox.shrink(),
                         ),
-
-                        SizedBox(height: 20),
+                
+                        SizedBox(height: 5),
                         Text(
                           "Email",
                           style: TextStyle(
@@ -226,8 +225,8 @@ class _RegisterscreenState extends State<Registerscreen> {
                                 )
                               : SizedBox.shrink(),
                         ),
-
-                        SizedBox(height: 20),
+                
+                        SizedBox(height: 5),
                         Text(
                           "Password",
                           style: TextStyle(
@@ -288,7 +287,7 @@ class _RegisterscreenState extends State<Registerscreen> {
                             ),
                           ),
                         ),
-                        SizedBox(height: 20),
+                        SizedBox(height: 5),
                         Text(
                           "Konfirmasi",
                           style: TextStyle(
@@ -338,7 +337,7 @@ class _RegisterscreenState extends State<Registerscreen> {
                             ),
                           ),
                         ),
-                        SizedBox(height: 50),
+                        SizedBox(height: 40),
                         Container(
                           width: 150,
                           height: 40,
@@ -364,7 +363,6 @@ class _RegisterscreenState extends State<Registerscreen> {
                             ),
                           ),
                         ),
-                        SizedBox(height: 20),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,

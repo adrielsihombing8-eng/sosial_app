@@ -1,5 +1,7 @@
 const jwt = require ('jsonwebtoken');
 const userModel = require ('../model/userModel');
+const donevn = require('dotenv');
+donevn.config();
 
 class userServis{
     //generate token

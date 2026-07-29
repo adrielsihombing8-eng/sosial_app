@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sosial_app/app/Routes/appPages.dart';
 import 'package:sosial_app/app/Routes/routes.dart';
 import 'package:sosial_app/app/services/auth.dart';
+import 'package:sosial_app/app/services/auth_controller.dart';
 import 'package:sosial_app/app/views/auth/loginScreen.dart';
 
 
@@ -12,6 +13,7 @@ void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   SharedPreferences pref = await SharedPreferences.getInstance();
   String? token = pref.getString("token");
+  Get.put(AuthController(),permanent: true);
   runApp(MainApp(token: token));
 }
 
