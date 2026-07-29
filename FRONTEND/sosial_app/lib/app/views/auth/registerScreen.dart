@@ -127,7 +127,7 @@ class _RegisterscreenState extends State<Registerscreen> {
                       children: [
                         SizedBox(height: 5),
                         Text(
-                          "username",
+                          "Username",
                           style: TextStyle(
                             fontSize: 15,
                             color: controller.usernameFocused.value
@@ -248,20 +248,20 @@ class _RegisterscreenState extends State<Registerscreen> {
                           validator: (value) {
                             if (value == null || value.isEmpty)
                               return 'Wajib di isi';
-                            if (!RegExp(r'[A-Z]').hasMatch(value)) {
-                              return 'harus ada huruf besar';
-                            }
-                            if (!RegExp(r'[a-z]').hasMatch(value)) {
-                              return 'harus ada huruf kecil';
-                            }
-                            if (!RegExp(r'[0-9]').hasMatch(value)) {
-                              return 'harus ada angka';
-                            }
-                            if (!RegExp(
-                              r'[!@#$%^&*(),.?":{}|<>]',
-                            ).hasMatch(value)) {
-                              return 'Harus ada simbol unik (!@#%\$, dll)';
-                            }
+                            // if (!RegExp(r'[A-Z]').hasMatch(value)) {
+                            //   return 'harus ada huruf besar';
+                            // }
+                            // if (!RegExp(r'[a-z]').hasMatch(value)) {
+                            //   return 'harus ada huruf kecil';
+                            // }
+                            // if (!RegExp(r'[0-9]').hasMatch(value)) {
+                            //   return 'harus ada angka';
+                            // }
+                            // if (!RegExp(
+                            //   r'[!@#$%^&*(),.?":{}|<>]',
+                            // ).hasMatch(value)) {
+                            //   return 'Harus ada simbol unik (!@#%\$, dll)';
+                            // }
                             return null;
                           },
                           decoration: InputDecoration(

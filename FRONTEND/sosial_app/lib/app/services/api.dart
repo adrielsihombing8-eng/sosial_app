@@ -16,7 +16,7 @@ class Api {
     var url = Uri.parse("$BaseUrl$authUser$registerUser");
 
     try {
-      final res = await http.post(url, body: jsonEncode(data));
+      final res = await http.post(url, headers: {'Content-Type': 'application/json',} , body: jsonEncode(data));
 
       final result = jsonDecode(res.body);
       print(jsonDecode(res.body));
@@ -46,7 +46,7 @@ class Api {
     var url = Uri.parse("$BaseUrl$authUser$loginUser");
 
     try {
-      final res = await http.post(url, body: jsonEncode(data));
+      final res = await http.post(url, headers: {'Content-Type' : 'application/json',} , body: jsonEncode(data));
 
       final result = jsonDecode(res.body);
       if (res.statusCode == 200) {

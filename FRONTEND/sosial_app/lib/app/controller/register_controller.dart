@@ -81,8 +81,9 @@ class RegisterController extends GetxController {
       isLoading.value = false;
 
       print('Login dengan $email');
+      print(userData['status']);
 
-      if (userData['status'] == 201) {
+      if (userData['statuscode'] == 201) {
         emailMessage.value = '';
         userMessage.value = '';
 
@@ -95,9 +96,9 @@ class RegisterController extends GetxController {
         authController.setUser(userBio);
 
         Get.toNamed("/HOME");
-      } else if (userData['status'] == 401) {
+      } else if (userData['statuscode'] == 401) {
         emailMessage.value = userData['message'];
-      } else if (userData['status'] == 402) {
+      } else if (userData['statuscode'] == 402) {
         userMessage.value = userData['message'];
       } else {
         print("data hilang!!!!!!!");

@@ -36,7 +36,7 @@ class LoginController extends GetxController {
       var apiLogin = await Api.login(userLogin);
       isLoading.value = false;
 
-      if (apiLogin['statuscode'] == 200) {
+      if (apiLogin['status'] == 200) {
         emailMessage.value = '';
 
         models = Authmodel(
