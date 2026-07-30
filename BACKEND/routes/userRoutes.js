@@ -4,5 +4,6 @@ const express = require('express').Router();
 express.post('/register', userController.register);
 express.post('/loginUser', userController.login);
 express.get('/auth', userController.auth);
+express.post('/refreshToken', userController.refresh);
 
 module.exports = express;

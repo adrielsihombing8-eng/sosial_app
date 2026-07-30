@@ -12,6 +12,7 @@ dependencies:
   jwt_decoder: ^2.0.1
   video_player: ^2.9.1
   get: ^4.7.3
+  image_picker: ^1.0.7
   flutter:
     sdk: flutter
 

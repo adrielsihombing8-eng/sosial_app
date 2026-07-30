@@ -3,3 +3,5 @@ String authUser = "/api/auth";
 String registerUser = "/register";
 String loginUser = "/loginUser";
 String authCek = "/auth";
+String refreshToken = "/refreshToken";
+

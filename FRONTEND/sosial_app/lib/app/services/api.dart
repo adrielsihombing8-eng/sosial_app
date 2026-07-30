@@ -10,6 +10,7 @@ class Api {
     defaultValue: "$apiUrl",
   );
 
+//register
   static Future<Map<String, dynamic>> register(
     Map<String, dynamic> data,
   ) async {
@@ -42,6 +43,7 @@ class Api {
     }
   }
 
+//login
   static Future<Map<String, dynamic>> login(Map<String, dynamic> data) async {
     var url = Uri.parse("$BaseUrl$authUser$loginUser");
 
@@ -67,6 +69,7 @@ class Api {
     }
   }
 
+//cektoken
   static Future<bool> cekToken(String token) async {
     var Url = Uri.parse("$BaseUrl$authUser$authCek");
 
@@ -84,6 +87,33 @@ class Api {
     } catch (err) {
       print(err.toString());
       return false;
+    }
+  }
+
+//refresh token
+  static Future<String?> refreshToken() async{
+    final refreshToken = await AuthStore.getRefreshToken();
+    if(refreshToken == null) return null;
+    var Url = Uri.parse("$BaseUrl$authUser$refreshToken");
+
+    try{
+      var res = await http.post(
+        Url,
+        headers: {'Content-Type' : 'application/json'},
+        body: jsonEncode({'refreshToken' : refreshToken})
+      );
+      
+      if(res.statusCode == 200){
+        var result = jsonDecode(res.body);
+        await AuthStore.saveToken(result['token']);
+      }
+      else{
+        return null;
+      }
+    }
+    catch(err){
+      print(err.toString());
+      return null;
     }
   }
 }
