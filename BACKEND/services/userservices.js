@@ -14,7 +14,8 @@ class userServis{
     }
     //save regis
     static async saveUser({username, email, password}){
-        return userModel.create({username, email, password});
+        const user = new userModel({username, email, password})
+        return user.save();
     }
     //password checker
     static async passwordCheck(email, password){

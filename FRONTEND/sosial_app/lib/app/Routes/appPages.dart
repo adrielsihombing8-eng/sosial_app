@@ -6,7 +6,7 @@ import 'package:sosial_app/app/bindings/register_binding.dart';
 import 'package:sosial_app/app/services/auth.dart';
 import 'package:sosial_app/app/views/auth/loginScreen.dart';
 import 'package:sosial_app/app/views/auth/registerScreen.dart';
-import 'package:sosial_app/app/views/dashboard/home.dart';
+import 'package:sosial_app/app/views/dashboard/dashboard.dart';
 
 class Apppages {
   static final routes = [
@@ -14,6 +14,6 @@ class Apppages {
     GetPage(name: Routes.routes.INITIAL, page: () => Loginscreen(), binding: LoginBindings()),
     GetPage(name: Routes.routes.LOGIN, page: () => Loginscreen(), binding: LoginBindings()),
     GetPage(name: Routes.routes.REGISTER, page: () => Registerscreen(), binding: RegisterBinding()),
-    GetPage(name: Routes.routes.HOME, page:() => Home()),
+    GetPage(name: Routes.routes.HOME, page:() => Dashboard()),
   ];
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -12,7 +13,7 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Text("Selamat Datang"),
+        child: Text("Home Screen"),
       ),
     );
   }

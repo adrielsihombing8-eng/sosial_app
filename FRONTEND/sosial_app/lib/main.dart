@@ -26,7 +26,7 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      initialRoute: isLoggedIn? routes.SPLASHCHECKER : routes.INITIAL,
+      initialRoute: routes.HOME, // isLoggedIn? routes.SPLASHCHECKER : routes.INITIAL,
       getPages: Apppages.routes,
       theme: ThemeData(
         primarySwatch: Colors.blue,

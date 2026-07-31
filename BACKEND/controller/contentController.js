@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
-const contentModel = require('../model/contentModel');
-const contentServices = require('../services/contentServices');
+const contentModel = require("../model/contentModel");
+const contentServices = require("../services/contentServices");
 
 //middleware
 exports.middleware = async (req, res, next) => {
@@ -16,7 +16,7 @@ exports.middleware = async (req, res, next) => {
 
     try {
         const decoded = jwt.verify(token, process.env.secret_key);
-        req.user = decoded;
+        req.userId = decoded.id;
         console.log("data berhasil di deteksi");
         return res.status(200).json({
             status: true,
@@ -46,10 +46,39 @@ exports.middleware = async (req, res, next) => {
 
 //addcontent
 exports.addContent = async (req, res, next) => {
-    const {title, content, imageUrl, date, time} = req.body;
+    try {
+        const { title, content, imageUrl, date, time } = req.body;
+        const userId = req.userId;
+
+        const post = await contentServices.contentAdd(userId, {
+            title,
+            content,
+            imageUrl,
+            date,
+            time,
+        });
+
+        if(!post){
+            res.status(400).json({ message: "data gagal di simpan" });
+        }
+        else{
+            res.status(200).json({ message: "data todo disimpan" });
+        }
+    } catch (err) {
+        next(err);
+    }
 };
 
 //loadcontent
 exports.loadcontent = async (req, res, next) => {
+    try {
+        const { cursor, limit = 10 } = req.query;
+        const query = cursor ? { _id: { $lt: cusor } } : {};
+        const posts = await contentServices.loadContent(query);
+        const nextCursor = posts.length > 0 ? posts[posts.length - 1]._id : null;
 
+        res.json({ posts, nextCursor, hasMore: posts.length === parseInt(limit) });
+    } catch (err) { 
+        next(err)
+    }
 };

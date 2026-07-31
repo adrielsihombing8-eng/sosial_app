@@ -34,8 +34,11 @@ exports.register = async (req, res, next) => {
 exports.login = async (req, res, next) => {
     const { email, password } = req.body;
     try {
+
+        console.log("memulai login");
         const user = await userServis.findUser({ email });
         if (user && userServis.passwordCheck(email, password)) {
+            console.log("data di temukan");
             res.status(200).json({
                 _id: user._id,
                 username: user.username,
@@ -133,4 +136,6 @@ exports.refresh = async (req, res, next) => {
         return res.status(500).json({ status: false, message: "Server error" });
     }
 };
+
+//
 

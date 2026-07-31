@@ -5,3 +5,7 @@ String loginUser = "/loginUser";
 String authCek = "/auth";
 String refreshToken = "/refreshToken";
 
+String contenUrl = "/api/content";
+String tokenCheck = "/tokenCheck";
+String addcontent = "/addContent";
+String loadData = "/loadData";

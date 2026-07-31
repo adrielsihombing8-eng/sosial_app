@@ -14,8 +14,14 @@ class contentServices{
             return await content.save();
         }
         catch(err){
-            throw new Error("error to saving data");
+            throw new Error("error : ${err.message}");
         }
+    }
+
+    static async loadContent(query){
+        const content = await contentModel.find(query).sort({ _id: -1 })
+            .limit(parseInt(limit));
+        return content;
     }
 };
 

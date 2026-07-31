@@ -1,7 +1,9 @@
 import 'dart:convert';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sosial_app/app/services/auth_store.dart';
+import 'package:sosial_app/app/services/postservices.dart';
 import 'package:sosial_app/app/util/constants.dart';
 
 class Api {
@@ -55,6 +57,7 @@ class Api {
         var result = jsonDecode(res.body);
         await AuthStore.saveTokens(result['token'], result['refreshToken']);
 
+        print("berhasil login");
         return {
           "statuscode": res.statusCode,
           "_id": result['_id'],
@@ -62,6 +65,7 @@ class Api {
           "email": result['email'],
         };
       } else {
+        print("gagal login");
         return {"statuscode": res.statusCode, "messange": result['messange']};
       }
     } catch (err) {
@@ -114,6 +118,34 @@ class Api {
     catch(err){
       print(err.toString());
       return null;
+    }
+  }
+
+//load data
+  static Future<Postservices> getPosts({String? cursor, int limit = 10}) async{
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('token'); 
+
+    final queryParams = {
+      'limit': limit.toString(),
+      if (cursor != null) 'cursor': cursor,
+    };
+
+    final uri = Uri.parse('$BaseUrl$contenUrl$loadData').replace(queryParameters: queryParams);
+
+    final response = await http.get(
+      uri,
+      headers: {
+        'Authorization': 'Bearer $token',
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      return Postservices.fromJson(data);
+    } else {
+      throw Exception('Gagal mengambil post: ${response.statusCode}');
     }
   }
 }
