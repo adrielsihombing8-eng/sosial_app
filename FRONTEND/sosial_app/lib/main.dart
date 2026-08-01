@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -11,6 +12,16 @@ import 'package:sosial_app/app/views/auth/loginScreen.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
+
+  SystemChrome.setSystemUIOverlayStyle(
+    const SystemUiOverlayStyle(
+      systemNavigationBarColor: Colors.white,
+      systemNavigationBarIconBrightness: Brightness.dark,
+      statusBarColor: const Color(0xFF1C1C1C),
+      statusBarIconBrightness: Brightness.dark,
+    ),
+  );
+
   SharedPreferences pref = await SharedPreferences.getInstance();
   String? token = pref.getString("token");
   Get.put(AuthController(),permanent: true);

@@ -33,15 +33,11 @@ class _DashboardState extends State<Dashboard> {
       bottomNavigationBar: SafeArea(
         child: Container(
           decoration: BoxDecoration(
-            border: Border.all(color: Colors.black, width: 3.0),
-            color: Colors.black,
-            borderRadius: const BorderRadius.only(
-              topLeft: Radius.circular(20),// cek perubahan
-              topRight: Radius.circular(20),// cek perubahan
-            ),
+            border: Border.all(color: Colors.black12, width: 3.0),
+            color: const Color(0xFF1C1C1C),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.3),
+                color: Colors.black12.withOpacity(0.3),
                 spreadRadius: 0,
                 blurRadius: 2,
                 offset: const Offset(0, 4)
