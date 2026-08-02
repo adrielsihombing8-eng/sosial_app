@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 const contentModel = require("../model/contentModel");
 const contentServices = require("../services/contentServices");
+const userServices = require("../services/userservices")
 
 //middleware
 exports.middleware = async (req, res, next) => {
@@ -47,21 +48,28 @@ exports.middleware = async (req, res, next) => {
 //addcontent
 exports.addContent = async (req, res, next) => {
     try {
-        const { title, content, imageUrl, date, time } = req.body;
-        const userId = req.userId;
-
-        const post = await contentServices.contentAdd(userId, {
-            title,
-            content,
-            imageUrl,
-            date,
-            time,
+        const result = await new Promise((resolve, reject) => {
+            const stream = cloudinary.uploader.upload_stream(
+                { folder: 'sosialapp' },
+                (err, result) => err ? reject(err) : resolve(result)
+            );
+            stream.end(req.file.buffer);
         });
 
-        if(!post){
+        const userId = req.userId;
+        const post = new contentModel({
+            userId: userId,
+            content: req.body.content,
+            imageUrl: result.secure_url,
+            imagePublicId: result.public_id,
+        })
+
+        const saving = await contentServices.contentAdd(post);
+
+        if (!post) {
             res.status(400).json({ message: "data gagal di simpan" });
         }
-        else{
+        else {
             res.status(200).json({ message: "data todo disimpan" });
         }
     } catch (err) {
@@ -78,7 +86,27 @@ exports.loadcontent = async (req, res, next) => {
         const nextCursor = posts.length > 0 ? posts[posts.length - 1]._id : null;
 
         res.json({ posts, nextCursor, hasMore: posts.length === parseInt(limit) });
-    } catch (err) { 
+    } catch (err) {
         next(err)
+    }
+};
+
+//findUser
+exports.findUser = async (req, res, next) => {
+    try{
+        const {userId} = req.query
+        const user = await userServices.findUserId(postId);
+
+        if(!user){
+            return res.status(404).json({ success: false, message: "User tidak ditemukan" });
+        }
+
+        
+        //search gambarnya belom
+
+        res.status(200).json({userdata: user});
+    }
+    catch(err){
+        res.status(500).json({ success: false, message: err.message });
     }
 };

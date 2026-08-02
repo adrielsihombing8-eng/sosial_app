@@ -1,20 +1,13 @@
 const contentModel = require('../model/contentModel');
 
 class contentServices{
-    static async contentAdd(userId, {title, content, imageUrl, date, time}){
+    static async contentAdd(postdata){
         try{
-            const content = contentModel({
-                userId,
-                title,
-                content,
-                imageUrl,
-                date,
-                time
-            });
+            const content = postdata;
             return await content.save();
         }
         catch(err){
-            throw new Error("error : ${err.message}");
+            throw new Error('error : ${err.message}');
         }
     }
 

@@ -107,7 +107,7 @@ exports.refresh = async (req, res, next) => {
 
         const decoded = jwt.verify(refreshToken, "refresh_secret_token");
 
-        const user = await userServis.finUserId(decoded._id);
+        const user = await userServis.findUserId(decoded._id);
 
         if (!user || user.refreshToken !== refreshToken) {
             return res.status(403).json({ message: "refresh token tidak valid" });
@@ -137,5 +137,5 @@ exports.refresh = async (req, res, next) => {
     }
 };
 
-//
+
 

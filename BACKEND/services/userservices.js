@@ -27,7 +27,7 @@ class userServis{
         return userModel.findOne(username);
     }
     //find by id
-    static async finUserId(id){
+    static async findUserId(id){
         return userModel.findById(id).select('-password');
     }
     //refresToken
