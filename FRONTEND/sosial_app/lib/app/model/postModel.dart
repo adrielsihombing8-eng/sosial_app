@@ -4,6 +4,8 @@ class Postmodel {
   final String? content;
   final String? imageUrl;
   final DateTime? date;
+  final bool? like;
+  final bool? save;
 
   Postmodel({
     required this.id,
@@ -11,6 +13,8 @@ class Postmodel {
     required this.content,
     required this.imageUrl,
     required this.date,
+    required this.like,
+    required this.save
   });
 
   factory Postmodel.fromJson(Map<String, dynamic> json) {
@@ -20,6 +24,8 @@ class Postmodel {
       content: json['content'],
       imageUrl: json['imageUrl'],
       date: json['date'] != null ? DateTime.parse(json['date']) : null,
+      like: json['like'],
+      save: json['save']
     );
   }
 
@@ -29,6 +35,8 @@ class Postmodel {
       'content': content,
       'imageUrl': imageUrl,
       'date': date?.toIso8601String(),
+      'like': like,
+      'save': save
     };
   }
 }

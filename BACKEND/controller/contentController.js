@@ -66,7 +66,7 @@ exports.addContent = async (req, res, next) => {
 
         const saving = await contentServices.contentAdd(post);
 
-        if (!post) {
+        if (!saving) {
             res.status(400).json({ message: "data gagal di simpan" });
         }
         else {

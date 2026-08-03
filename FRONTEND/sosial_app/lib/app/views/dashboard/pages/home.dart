@@ -26,6 +26,8 @@ class _HomeState extends State<Home> {
     content: 'content',
     imageUrl: null,
     date: DateTime(2026, 7, 31, 14, 30, 0),
+    like: false,
+    save: false,
   );
 
   @override
@@ -64,7 +66,10 @@ class _HomeState extends State<Home> {
           ),
         ],
       ),
-      body: Column(children: [Postcard(post: post, user: user,)]),
+      body: Padding(
+        padding: const EdgeInsets.only(top: 20.0),
+        child: Column(children: [Postcard(post: post, user: user,)]),
+      ),
     );
   }
 }

@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const userModel = require('../model/userModel');
+const { type } = require('node:os');
 
 const contentSchema = new mongoose.Schema({
     userId: {

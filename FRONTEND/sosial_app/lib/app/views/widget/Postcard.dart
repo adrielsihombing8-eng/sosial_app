@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:get/state_manager.dart';
@@ -50,7 +51,15 @@ class _PostcardState extends State<Postcard> {
   Widget build(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width,
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [Color(0xFF07050F), Colors.black ,Color(0xFF07050F), Color(0xFF0F0B1E)],
+          begin: AlignmentGeometry.topCenter,
+          end: AlignmentGeometry.bottomCenter,
+        ),
+      ),
       child: Card(
+        color: Colors.transparent,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         child: Padding(
           padding: const EdgeInsets.all(12),
@@ -58,29 +67,53 @@ class _PostcardState extends State<Postcard> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Padding(
-                    padding: EdgeInsets.all(8),
-                    child: CircleAvatar(child: Icon(Icons.person_rounded)),
-                  ),
-                  SizedBox(width: 10),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  Row(
                     children: [
-                      Text(
-                        widget.user.username ?? '', //user.username
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
+                      Padding(
+                        padding: EdgeInsets.all(8),
+                        child: CircleAvatar(child: Icon(Icons.person_rounded)),
                       ),
-                      Text(
-                        DateFormat(
-                          'dd MMM yyyy, HH:mm',
-                        ).format(widget.post.date ?? DateTime.now()),
-                        style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+                      SizedBox(width: 10),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            widget.user.username ?? '', //user.username
+                            style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white
+                            ),
+                          ),
+                          Text(
+                            DateFormat(
+                              'dd MMM yyyy, HH:mm',
+                            ).format(widget.post.date ?? DateTime.now()),
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: Colors.grey[600],
+                            ),
+                          ),
+                        ],
                       ),
                     ],
+                  ),
+                  Container(
+                    height: 35,
+                    width: 80,
+                    decoration: BoxDecoration(
+                      color: Colors.grey,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 8, left: 20),
+                      child: Text(
+                        "Follow",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
                   ),
                 ],
               ),
@@ -112,9 +145,46 @@ class _PostcardState extends State<Postcard> {
               if (widget.post.content != null)
                 Text(
                   widget.post.content!,
-                  style: const TextStyle(fontSize: 14),
+                  style: const TextStyle(fontSize: 14, color: Colors.white),
                 ),
               const SizedBox(height: 6),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      IconButton(
+                        onPressed: () {},
+                        icon: Icon(CupertinoIcons.heart, color: Colors.white,),
+                      ),
+                      Text("20", style: TextStyle(color: Colors.white),),
+                      IconButton(
+                        onPressed: () {},
+                        icon: Icon(CupertinoIcons.chat_bubble, color: Colors.white,),
+                      ),
+                      Text("20", style: TextStyle(color: Colors.white)),
+                      IconButton(
+                        onPressed: () {},
+                        icon: Icon(CupertinoIcons.arrow_2_squarepath, color: Colors.white,),
+                      ),
+                      Text("20", style: TextStyle(color: Colors.white)),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      IconButton(
+                        onPressed: () {},
+                        icon: Icon(CupertinoIcons.bookmark, color: Colors.white,),
+                      ),
+                      Text("20", style: TextStyle(color: Colors.white)),
+                      IconButton(
+                        onPressed: () {},
+                        icon: Icon(CupertinoIcons.share_up, color: Colors.white,),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ],
           ),
         ),
