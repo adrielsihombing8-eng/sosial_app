@@ -1,31 +1,43 @@
 const likeAndSaveModel = require("../model/likeAndSave.model");
 
-class likeAndSaveServices{
-    static async findDatas(userId){
-        try{
-            const datas = await likeAndSaveModel.findOne({userId : userId});
+class likeAndSaveServices {
+    static async findDatas(userId, objectId) {
+        try {
+            const datas = await likeAndSaveModel.findOne({ userId: userId, _id: objectId });
             return datas;
         }
-        catch(err){
+        catch (err) {
             throw new Error('error : ${err.message}');
         }
     }
-    static async saveDatas(LikesSaveDatas){
-        try{
+    static async saveDatas(LikesSaveDatas) {
+        try {
             const datas = LikesSaveDatas;
             return await datas.save();
         }
-        catch(err){
+        catch (err) {
             throw new Error('error : ${err.message}');
         }
     }
-    static async updateData(userId, updateData){
-        const datas = await likeAndSaveModel.findOneAndUpdate(
-        { userId: userId },
-        updateData,
-        { new: true }
-    );
-    return datas;
+    static async updateData(objectId, updateData) {
+        try{
+            const datas = await likeAndSaveModel.findByIdAndUpdate(
+                objectId,
+                updateData,
+                { new: true }
+            );
+            return datas;
+        }
+        catch(err){
+            throw new Error('Err : ${err.message}');
+        }
+    }
+    static async syncDatas(userId, objectId) {
+        try {
+            const datas = await likeAndSaveModel.findOne({ _id: objectId, userId: userId });
+            return datas;
+        }
+        catch (err) {}
     }
 }
 

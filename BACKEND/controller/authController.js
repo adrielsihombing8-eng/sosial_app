@@ -68,7 +68,7 @@ exports.auth = async (req, res, next) => {
 
     try {
         const decoded = jwt.verify(token, process.env.secret_key);
-        req.user = decoded;
+        req.userId = decoded._id;
         console.log("data berhasil di deteksi");
         return res.status(200).json({
             status: true,

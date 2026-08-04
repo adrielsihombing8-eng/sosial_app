@@ -1,14 +1,13 @@
 const jwt = require("jsonwebtoken");
-const likeAndSaveServices = require("../services/likeAndSave.services");
-const likeAndSaveModel = require("../model/likeAndSave.model"); 
+const countComponenServices = require("../services/countComponen.services");
+const countComponenModel = require("../model/countComponen.model");
 
-//by user view
 exports.loadDatas = async (res, req, next) => {
     const userId = req.userId;
     const {objectId} = req.query;
     
     try{
-        const findDatas = await likeAndSaveServices.findDatas(userId);
+        const findDatas = await countComponenServices.findDatas(userId, objectId);
         if(!findDatas){
             res.status(400).json({message: "error to find"});
         }
@@ -23,15 +22,14 @@ exports.loadDatas = async (res, req, next) => {
 exports.saveDatas = async (res, req, next) => {
     const userId = req.userId;
     try{
-        const likesSave = likeAndSaveModel({
+        const countComponen = countComponenModel({
             userId: userId,
-            like: req.body.like,
-            save: req.body.save,
-            firstSee: false,
-            repost: req.body.repost
+            likeCount: req.body.likeCount,
+            saveCount: req.body.saveCount,
+            repostCount: req.body.repostCount
         })
 
-        const saving = await likeAndSaveServices.saveDatas(likesSave);
+        const saving = await countComponenServices.saveDatas(countComponen);
         if(!saving){
             res.status(400).json({message: "error save"});
         }
@@ -47,25 +45,17 @@ exports.updateDatas = async (res, req, next) =>{
     const userId = req.userId;
     const {objectId} = req.query;
     try{
-        const datas = likeAndSaveModel({
+        const datas = countComponenModel({
             userId: userId,
-            like: req.body.like,
-            save: req.body.save,
-            firstSee: false,
-            repost: req.body.repost
+            likeCount: req.body.likeCount,
+            saveCount: req.body.saveCount,
+            repostCount: req.body.repostCount
         })
 
-        const syncDatas = await likeAndSaveServices.syncDatas(userId, objectId);
-        if(!syncDatas){
-            res.status(400).json({message: "error to find datas"});
-        }
-
-        const updating = await likeAndSaveServices.updateData(objectId, datas);
+        const updating = await countComponenServices.updateData(objectId, datas);
         res.status(200).json({message : "Succes to updating", datas: updating});
     }
     catch(err){
         next(err);
     }
 };
-
-//by all user

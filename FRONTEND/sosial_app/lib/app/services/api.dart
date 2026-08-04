@@ -129,7 +129,7 @@ class Api {
     }
   }
 
-  //load data
+  //load data content
   static Future<Postservices> getPosts({String? cursor, int limit = 10}) async {
     final prefs = await SharedPreferences.getInstance();
     final token = prefs.getString('token');
@@ -168,7 +168,7 @@ class Api {
     }
   }
 
-  //send post
+  //send post content
   static Future<Postservices> addData(
     String title,
     String content,
@@ -238,17 +238,27 @@ class Api {
         );
 
         return user;
-      }
-      else{
-        user = Authmodel(
-          id: null,
-          username: null,
-          email: null,
-        );
+      } else {
+        user = Authmodel(id: null, username: null, email: null);
         return user;
       }
     } catch (err) {
       throw new Exception('ERROR_DATA');
+    }
+  }
+
+  //add data of view
+  static Future<void> addPostView(String postId, String token) async {
+    final response = await http.post(
+      Uri.parse('$BaseUrl/posts/$postId/view'),//belom siap
+      headers: {
+        'Authorization': 'Bearer $token',
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode == 401) {
+      throw Exception('SESSION_EXPIRED');
     }
   }
 }

@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:get/get.dart';
+import 'package:get/state_manager.dart';
 import 'package:http/http.dart';
 import 'package:intl/intl.dart';
+import 'package:sosial_app/app/controller/feed_controller.dart';
 import 'package:sosial_app/app/model/authModel.dart';
 import 'package:sosial_app/app/model/postModel.dart';
 import 'package:sosial_app/app/views/widget/Postcard.dart';
@@ -14,21 +17,42 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  final Authmodel user = Authmodel(
-    id: '11111',
-    username: 'Adriel Sihombing',
-    email: 'adrielsihombing@gmail.com',
-  );
+  final FeedController controller = Get.find<FeedController>();
+  final ScrollController scrollController = ScrollController();
+  // final Authmodel user = Authmodel(
+  //   id: '11111',
+  //   username: 'Adriel Sihombing',
+  //   email: 'adrielsihombing@gmail.com',
+  // );
 
-  final Postmodel post = Postmodel(
-    id: '1111',
-    userId: '2222',
-    content: 'content',
-    imageUrl: null,
-    date: DateTime(2026, 7, 31, 14, 30, 0),
-    like: false,
-    save: false,
-  );
+  // final Postmodel post = Postmodel(
+  //   id: '1111',
+  //   userId: '2222',
+  //   content: 'content',
+  //   imageUrl: null,
+  //   date: DateTime(2026, 7, 31, 14, 30, 0),
+  //   like: false,
+  //   save: false,
+  // );
+
+    @override
+  void initState() {
+    super.initState();
+    controller.loadMorePosts(); 
+
+    scrollController.addListener(() {
+      if (scrollController.position.pixels >=
+          scrollController.position.maxScrollExtent - 200) {
+        controller.loadMorePosts();
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    scrollController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +92,30 @@ class _HomeState extends State<Home> {
       ),
       body: Padding(
         padding: const EdgeInsets.only(top: 20.0),
-        child: Column(children: [Postcard(post: post, user: user,)]),
+        child: Obx(() {
+        if (controller.posts.isEmpty && controller.isLoading.value) {
+          return const Center(child: CircularProgressIndicator());
+        }
+
+        return RefreshIndicator(
+          onRefresh: controller.refreshPosts,
+          child: ListView.builder(
+            controller:scrollController,
+            itemCount: controller.posts.length + (controller.hasMore.value ? 1 : 0),
+            itemBuilder: (context, index) {
+              if (index >= controller.posts.length) {
+                return const Padding(
+                  padding: EdgeInsets.all(16),
+                  child: Center(child: CircularProgressIndicator()),
+                );
+              }
+
+              final post = controller.posts[index];
+              return Postcard(post: post);
+            },
+          ),
+        );
+      }),
       ),
     );
   }
