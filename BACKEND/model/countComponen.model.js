@@ -3,22 +3,26 @@ const userModel = require('../model/userModel');
 const { type } = require("node:os");
 
 const countComponenSchema = new mongoose.Schema({
-    userId: {
+    postId: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: userModel.modelName,
+        ref: contentModel.modelName,
         required: true
     },
     likeCount: {
         type: Number,
-        require: true
+        default: 0,
     },
     saveCount: {
         type: Number,
-        require: true
+        default: 0,
     },
     repostCount: {
         type: Number,
-        require: true
+        default: 0,
+    },
+    viewCount: {
+        type: Number,
+        default: 0,
     }
 }, { timestamps: true });
 

@@ -10,3 +10,13 @@ String tokenCheck = "/tokenCheck";
 String addcontent = "/addContent";
 String loadData = "/loadData";
 String findUser = "/findUser";
+
+String likeandsave = "/api/likeAndSave";
+String likeLoad = "/loadDatas";
+String saveLike = "/saveDatas";
+String upadteLike = "/updateDatas";
+
+String countLike = "/api/countComponen";
+String countLoad = "/loadDatas";
+String countSave = "/saveDatas";
+String updateSave = "/updateDatas";

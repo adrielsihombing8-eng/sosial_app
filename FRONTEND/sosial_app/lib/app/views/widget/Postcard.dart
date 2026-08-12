@@ -4,6 +4,7 @@ import 'package:get/get_navigation/get_navigation.dart';
 import 'package:get/state_manager.dart';
 import 'package:intl/intl.dart';
 import 'package:sosial_app/app/model/authModel.dart';
+import 'package:sosial_app/app/model/countModel.card.dart';
 import 'package:sosial_app/app/model/postModel.dart';
 import 'package:sosial_app/app/services/api.dart';
 import 'package:sosial_app/app/services/auth_store.dart';
@@ -19,6 +20,7 @@ class Postcard extends StatefulWidget {
 
 class _PostcardState extends State<Postcard> {
   late Authmodel user;
+  late CountmodelCard info;
   bool hasCountedView = false;
 
   @override

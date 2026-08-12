@@ -12,8 +12,8 @@ class likeAndSaveServices {
     }
     static async saveDatas(LikesSaveDatas) {
         try {
-            const datas = LikesSaveDatas;
-            return await datas.save();
+            const datas = await likeAndSaveModel.create(LikesSaveDatas);
+            return datas;
         }
         catch (err) {
             throw new Error('error : ${err.message}');

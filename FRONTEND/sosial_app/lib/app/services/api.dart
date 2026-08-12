@@ -249,8 +249,9 @@ class Api {
 
   //add data of view
   static Future<void> addPostView(String postId, String token) async {
+    final url = Uri.parse('$BaseUrl');
     final response = await http.post(
-      Uri.parse('$BaseUrl/posts/$postId/view'),//belom siap
+      url,
       headers: {
         'Authorization': 'Bearer $token',
         'Content-Type': 'application/json',

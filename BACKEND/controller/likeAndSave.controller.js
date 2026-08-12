@@ -3,7 +3,7 @@ const likeAndSaveServices = require("../services/likeAndSave.services");
 const likeAndSaveModel = require("../model/likeAndSave.model"); 
 
 //by user view
-exports.loadDatas = async (res, req, next) => {
+exports.loadDatas = async (req, res, next) => {
     const userId = req.userId;
     const {objectId} = req.query;
     
@@ -20,14 +20,13 @@ exports.loadDatas = async (res, req, next) => {
     }
 };
 
-exports.saveDatas = async (res, req, next) => {
+exports.saveDatas = async (req, res, next) => {
     const userId = req.userId;
     try{
         const likesSave = likeAndSaveModel({
             userId: userId,
             like: req.body.like,
             save: req.body.save,
-            firstSee: false,
             repost: req.body.repost
         })
 
@@ -42,30 +41,3 @@ exports.saveDatas = async (res, req, next) => {
         next(err);
     }
 };
-
-exports.updateDatas = async (res, req, next) =>{
-    const userId = req.userId;
-    const {objectId} = req.query;
-    try{
-        const datas = likeAndSaveModel({
-            userId: userId,
-            like: req.body.like,
-            save: req.body.save,
-            firstSee: false,
-            repost: req.body.repost
-        })
-
-        const syncDatas = await likeAndSaveServices.syncDatas(userId, objectId);
-        if(!syncDatas){
-            res.status(400).json({message: "error to find datas"});
-        }
-
-        const updating = await likeAndSaveServices.updateData(objectId, datas);
-        res.status(200).json({message : "Succes to updating", datas: updating});
-    }
-    catch(err){
-        next(err);
-    }
-};
-
-//by all user

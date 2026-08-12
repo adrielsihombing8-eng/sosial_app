@@ -1,61 +1,88 @@
 const jwt = require("jsonwebtoken");
 const countComponenServices = require("../services/countComponen.services");
 const countComponenModel = require("../model/countComponen.model");
+const userservices = require("../services/userservices");
 
-exports.loadDatas = async (res, req, next) => {
+exports.loadDatas = async (req, res, next) => {
     const userId = req.userId;
-    const {objectId} = req.query;
-    
-    try{
-        const findDatas = await countComponenServices.findDatas(userId, objectId);
-        if(!findDatas){
-            res.status(400).json({message: "error to find"});
+    const { postId } = req.params;
+
+    try {
+        if (!userId) {
+            return res.status(400).json({ message: "userId is required" });
         }
 
-        res.status(200).json({message: "succes to find!!", datas: findDatas});
+        const auth = await userservices.findUserId(userId);
+        if (!auth) {
+            return res.status(400).json({ message: "userId not found" });
+        }
+        
+        const findDatas = await countComponenServices.findDatas(userId, postId);
+        if (!findDatas) {
+            res.status(400).json({ message: "error to find" });
+        }
+
+        res.status(200).json({ message: "succes to find!!", datas: findDatas });
     }
-    catch(err){
+    catch (err) {
         next(err);
     }
 };
 
-exports.saveDatas = async (res, req, next) => {
+exports.firstDatas = async (req, res, next) => {
     const userId = req.userId;
-    try{
+    const { postId } = req.params;
+
+    try {
+        if (!userId) {
+            return res.status(400).json({ message: "userId is required" });
+        }
+
+        const auth = await userservices.findUserId(userId);
+        if (!auth) {
+            return res.status(400).json({ message: "userId not found" });
+        }
+
         const countComponen = countComponenModel({
             userId: userId,
-            likeCount: req.body.likeCount,
-            saveCount: req.body.saveCount,
-            repostCount: req.body.repostCount
+            postId: postId
         })
 
         const saving = await countComponenServices.saveDatas(countComponen);
-        if(!saving){
-            res.status(400).json({message: "error save"});
+        if (!saving) {
+            res.status(400).json({ message: "error save" });
         }
 
-        res.status(200).json({message: "succes to save!!"});
+        res.status(200).json({ message: "succes to save!!" });
     }
-    catch(err){
+    catch (err) {
         next(err);
     }
 };
 
-exports.updateDatas = async (res, req, next) =>{
+exports.addView = async (req, res, next) => {
     const userId = req.userId;
-    const {objectId} = req.query;
-    try{
-        const datas = countComponenModel({
-            userId: userId,
-            likeCount: req.body.likeCount,
-            saveCount: req.body.saveCount,
-            repostCount: req.body.repostCount
-        })
+    const { postId } = req.params;
 
-        const updating = await countComponenServices.updateData(objectId, datas);
-        res.status(200).json({message : "Succes to updating", datas: updating});
+    try {
+        if (!userId) {
+            return res.status(400).json({ message: "userId is required" });
+        }
+
+        const auth = await userservices.findUserId(userId);
+        if (!auth) {
+            return res.status(400).json({ message: "userId not found" });
+        }
+
+        const updateDatas = await countComponenServices.addView(userId, postId);
+        if (!updateDatas) {
+            res.status(400).json({ message: "error to update" });
+        }
+
+        res.status(200).json({ message: "succes to update!!", datas: updateDatas });
     }
-    catch(err){
+    catch (err) {
         next(err);
     }
 };
+
