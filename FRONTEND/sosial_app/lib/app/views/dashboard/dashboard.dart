@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get_instance/src/bindings_interface.dart';
+import 'package:sosial_app/app/Routes/routes.dart';
+import 'package:sosial_app/app/bindings/Home_bindings.dart';
 import 'package:sosial_app/app/views/dashboard/pages/home.dart';
 import 'package:sosial_app/app/views/dashboard/pages/profil.dart';
 import 'package:sosial_app/app/views/dashboard/pages/searchUser.dart';
@@ -12,6 +15,12 @@ class Dashboard extends StatefulWidget {
 
 class _DashboardState extends State<Dashboard> {
   int selectIdx = 0;
+  final Set<int> loadedTabs = {0};
+
+  final List<Bindings> bindings = [
+    HomeBindings(),
+    //lain lain
+  ];
 
   List<Widget> get widgetOption => <Widget>[
       Home(),
@@ -19,17 +28,32 @@ class _DashboardState extends State<Dashboard> {
       Profil()
     ];
 
-    void onItemTapped(int index) {
+  void onItemTapped(int index) {
+    if (!loadedTabs.contains(index)) {
+      bindings[index].dependencies();
+      loadedTabs.add(index);
+    }
     setState(() {
       selectIdx = index;
     });
   }
 
   @override
+  void initState() {
+    super.initState();
+    bindings[selectIdx].dependencies();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-      body: widgetOption[selectIdx],
+      body: IndexedStack(
+        index: selectIdx,
+        children: List.generate(widgetOption.length, (i) {
+          return loadedTabs.contains(i) ? widgetOption[i] : const SizedBox.shrink();
+        }),
+      ),
       bottomNavigationBar: SafeArea(
         child: Container(
           decoration: BoxDecoration(

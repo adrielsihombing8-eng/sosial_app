@@ -3,6 +3,6 @@ const express = require("express").Router();
 const auth = require("../controller/authController");
 
 express.get("/loadDatas", auth.auth, likeAndSaveController.loadDatas);
-express.post("/saveDatas", auth.auth, likeAndSaveController.saveDatas);
+express.post("/saveDatas", auth.auth, likeAndSaveController.savingDatas);
 
 module.exports = express;

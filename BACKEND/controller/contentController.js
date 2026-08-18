@@ -1,7 +1,9 @@
 const jwt = require("jsonwebtoken");
 const contentModel = require("../model/contentModel");
 const contentServices = require("../services/contentServices");
+const cloudinary = require("../config/cloudinary");
 const userServices = require("../services/userservices")
+const countComponenModel = require("../model/countComponen.model");
 
 //middleware
 exports.middleware = async (req, res, next) => {
@@ -66,6 +68,16 @@ exports.addContent = async (req, res, next) => {
 
         const saving = await contentServices.contentAdd(post);
 
+        const count = await countComponenModel({
+            userId: userId,
+            postId: saving._id
+        });
+
+        const savingCount = await countComponenModel.create(count);
+        if (!savingCount) {
+            res.status(400).json({ message: "data gagal di simpan" });
+        }
+
         if (!saving) {
             res.status(400).json({ message: "data gagal di simpan" });
         }
@@ -91,20 +103,24 @@ exports.loadcontent = async (req, res, next) => {
     }
 };
 
-//findUser
+//findUser account
 exports.findUser = async (req, res, next) => {
     try{
-        const {userId} = req.query
-        const user = await userServices.findUserId(postId);
+        const {userId} = req.userId;
+        const {keywordId} = req.query;
 
+        const user = await userServices.findUserId(userId);
         if(!user){
             return res.status(404).json({ success: false, message: "User tidak ditemukan" });
         }
 
         
-        //search gambarnya belom
+        const userDatas = await contentServices.getUser(keyword);
+        if(!userDatas){
+            return res.status(404).json({ success: false, message: "User tidak ditemukan" });
+        }
 
-        res.status(200).json({userdata: user});
+        res.status(200).json({userdata: userDatas});
     }
     catch(err){
         res.status(500).json({ success: false, message: err.message });

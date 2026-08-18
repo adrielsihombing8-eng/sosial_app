@@ -221,7 +221,7 @@ class Api {
     Authmodel user;
     var url = Uri.parse(
       "$BaseUrl$contenUrl$findUser",
-    ).replace(queryParameters: {'userId': userId});
+    ).replace(queryParameters: {'keywordId': userId});
     try {
       var res = await http.get(
         url,
@@ -238,7 +238,31 @@ class Api {
         );
 
         return user;
-      } else {
+      } else if(res.statusCode == 401){
+        final newToken = await AuthStore.getRefreshToken();
+        if (newToken == null) {
+          throw Exception('SESSION_EXPIRED');
+        }
+        await AuthStore.saveToken(newToken);
+        var retryRes = await http.get(
+          url,
+          headers: {'Authorization': 'Bearer $newToken'},
+        );
+        
+        var retryData = jsonDecode(retryRes.body);
+        if (retryRes.statusCode == 200) {
+          var userJson = retryData['userdata'];
+          user = Authmodel(
+            id: userJson['_id'],
+            username: userJson['username'],
+            email: userJson['email'],
+          );
+          return user;
+        } else {
+          throw Exception('ERROR_DATA');
+        }
+      }
+      else{
         user = Authmodel(id: null, username: null, email: null);
         return user;
       }
@@ -249,17 +273,39 @@ class Api {
 
   //add data of view
   static Future<void> addPostView(String postId, String token) async {
-    final url = Uri.parse('$BaseUrl');
-    final response = await http.post(
-      url,
-      headers: {
-        'Authorization': 'Bearer $token',
-        'Content-Type': 'application/json',
-      },
-    );
+    final url = Uri.parse('$BaseUrl$countLike/$postId$updateView');
+    try {
+      final response = await http.post(
+        url,
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Content-Type': 'application/json',
+        },
+      );
 
-    if (response.statusCode == 401) {
-      throw Exception('SESSION_EXPIRED');
+      if (response.statusCode == 200) {
+        return;
+      } else if (response.statusCode == 401) {
+        final newToken = await AuthStore.getRefreshToken();
+        if (newToken == null) {
+          throw Exception('SESSION_EXPIRED');
+        }
+        await AuthStore.saveToken(newToken);
+        final retryResponse = await http.post(
+          url,
+          headers: {
+            'Authorization': 'Bearer $newToken',
+            'Content-Type': 'application/json',
+          },
+        );
+        if (retryResponse.statusCode == 200) {
+          return;
+        }
+      } else {
+        throw Exception('ERROR_TO_ADDVIEW');
+      }
+    } catch (err) {
+      throw new Exception("ERROR_CONNECTION");
     }
   }
 }

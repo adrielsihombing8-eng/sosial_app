@@ -20,11 +20,11 @@ class countComponenServices {
             throw new Error('error : ${err.message}');
         }
     }
-    static async addView(userId, postId) {
+    static async addView(postId , userId) {
         try{
             const result = await countComponenModel.findOneAndUpdate(
-                { postId },
-                { $setOnInsert: { postId } },
+                { userId ,postId },
+                { $setOnInsert: { userId, postId } },
                 { upsert: true, new: true, rawResult: true }
             );
 
@@ -33,14 +33,15 @@ class countComponenServices {
             if (isNewView) {
                 await countComponenModel.updateOne(
                     { postId },
-                    { $inc: { viewCount: 1 } }
+                    { $inc: { viewCount: 1 }},
+                    { upsert: true }
                 );
             }
 
             return isNewView;
         }
         catch (err) {
-            throw new Error('error : ${err.message}');
+            throw new Error("error : ${err.message}");
         }
     }
     static async likeToggel (userId, postId) {
@@ -71,6 +72,66 @@ class countComponenServices {
             );
 
             return newLike;
+        }
+    }
+    static async saveToggel (userId, postId) {
+        const exist = await likeAndSaveModel.findOne({ userId: userId, postId: postId });
+        if(exist) {
+            exist.save = !exist.save;
+            return await exist.save();
+
+            const increment = exist.like ? 1 : -1;
+            await countComponenModel.updateOne(
+                { postId: postId },
+                { $inc: { saveCount: increment } }
+            );
+            
+            return exist;
+        }
+        else {
+            const newSave = new likeAndSaveModel({
+                userId: userId,
+                postId: postId,
+                save: true
+            });
+            await newLike.save();
+
+            await countComponenModel.updateOne(
+                { postId: postId },
+                { $inc: { saveCount: 1 } }
+            );
+
+            return newSave;
+        }
+    }
+    static async repostToggel (userId, postId) {
+        const exist = await likeAndSaveModel.findOne({ userId: userId, postId: postId });
+        if(exist) {
+            exist.repost = !exist.repost;
+            return await exist.save();
+
+            const increment = exist.like ? 1 : -1;
+            await countComponenModel.updateOne(
+                { postId: postId },
+                { $inc: { repostCount: increment } }
+            );
+            
+            return exist;
+        }
+        else {
+            const newRepost = new likeAndSaveModel({
+                userId: userId,
+                postId: postId,
+                repost: true
+            });
+            await newRepost.save();
+
+            await countComponenModel.updateOne(
+                { postId: postId },
+                { $inc: { repostCount: 1 } }
+            );
+
+            return newRepost;
         }
     }
 }

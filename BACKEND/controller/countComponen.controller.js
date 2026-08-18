@@ -84,5 +84,82 @@ exports.addView = async (req, res, next) => {
     catch (err) {
         next(err);
     }
+}; //terakhir dari post card componen
+
+exports.likeToggel = async (req, res, next) => {
+    const userId = req.userId;
+    const { postId } = req.params;
+
+    try {
+        if (!userId) {
+            return res.status(400).json({ message: "userId is required" });
+        }
+
+        const auth = await userservices.findUserId(userId);
+        if (!auth) {
+            return res.status(400).json({ message: "userId not found" });
+        }
+
+        const updateDatas = await countComponenServices.likeToggel(userId, postId);
+        if (!updateDatas) {
+            res.status(400).json({ message: "error to update" });
+        }
+
+        res.status(200).json({ message: "succes to update!!", datas: updateDatas });
+    }
+    catch (err) {
+        next(err);
+    }
 };
 
+exports.saveToggel = async (req, res, next) => {
+    const userId = req.userId;
+    const { postId } = req.params;
+
+    try {
+        if (!userId) {
+            return res.status(400).json({ message: "userId is required" });
+        }
+
+        const auth = await userservices.findUserId(userId);
+        if (!auth) {
+            return res.status(400).json({ message: "userId not found" });
+        }
+
+        const updateDatas = await countComponenServices.saveToggel(userId, postId);
+        if (!updateDatas) {
+            res.status(400).json({ message: "error to update" });
+        }
+
+        res.status(200).json({ message: "succes to update!!", datas: updateDatas });
+    }
+    catch (err) {
+        next(err);
+    }
+};
+
+exports.repostToggel = async (req, res, next) => {
+    const userId = req.userId;
+    const { postId } = req.params;
+
+    try {
+        if (!userId) {
+            return res.status(400).json({ message: "userId is required" });
+        }
+
+        const auth = await userservices.findUserId(userId);
+        if (!auth) {
+            return res.status(400).json({ message: "userId not found" });
+        }
+
+        const updateDatas = await countComponenServices.repostToggel(userId, postId);
+        if (!updateDatas) {
+            res.status(400).json({ message: "error to update" });
+        }
+
+        res.status(200).json({ message: "succes to update!!", datas: updateDatas });
+    }
+    catch (err) {
+        next(err);
+    }
+};

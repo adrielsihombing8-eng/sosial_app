@@ -8,6 +8,7 @@ import 'package:sosial_app/app/controller/feed_controller.dart';
 import 'package:sosial_app/app/model/authModel.dart';
 import 'package:sosial_app/app/model/postModel.dart';
 import 'package:sosial_app/app/views/widget/Postcard.dart';
+import 'package:visibility_detector/visibility_detector.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -111,7 +112,18 @@ class _HomeState extends State<Home> {
               }
 
               final post = controller.posts[index];
-              return Postcard(post: post);
+              return VisibilityDetector(
+            key: Key('post-${post.id}'),
+            onVisibilityChanged: (info) {
+              
+              if (info.visibleFraction >= 0.5) {
+                controller.onPostVisible(post.id);
+              } else {
+                controller.onPostHidden(post.id);
+              }
+            },
+            child: Postcard(post: post),
+          );
             },
           ),
         );

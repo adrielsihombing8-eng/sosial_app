@@ -14,9 +14,11 @@ String findUser = "/findUser";
 String likeandsave = "/api/likeAndSave";
 String likeLoad = "/loadDatas";
 String saveLike = "/saveDatas";
-String upadteLike = "/updateDatas";
 
 String countLike = "/api/countComponen";
-String countLoad = "/loadDatas";
-String countSave = "/saveDatas";
-String updateSave = "/updateDatas";
+String countLoad = "/loadDatas"; //pakai parms
+String updateView = "/addView"; //pakai parms
+String updateLike = "/likeToggel"; //pakai parms
+String updateSave = "/saveToggel"; //pakai parms
+String updateRepost = "/repostToggel"; //pakai parms
+//api comment

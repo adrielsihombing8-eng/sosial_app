@@ -1,6 +1,6 @@
 class Postmodel {
-  final String? id;
-  final String? userId;
+  final String id;
+  final String userId;
   final String? content;
   final String? imageUrl;
   final DateTime? date;
