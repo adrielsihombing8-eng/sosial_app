@@ -115,7 +115,6 @@ class _HomeState extends State<Home> {
               return VisibilityDetector(
             key: Key('post-${post.id}'),
             onVisibilityChanged: (info) {
-              
               if (info.visibleFraction >= 0.5) {
                 controller.onPostVisible(post.id);
               } else {
