@@ -46,8 +46,10 @@ exports.login = async (req, res, next) => {
                 token: userServis.generateToken(user._id),
                 refreshToken: userServis.generateRefreshToken(user._id),
             });
+        } else if (!user){
+            res.status(401).json({ messange: "invalid email" });
         } else {
-            res.status(401).json({ messange: "invalid email or password" });
+            res.status(402).json({ messange: "invalid password" });
         }
     } catch (err) {
         next(err);

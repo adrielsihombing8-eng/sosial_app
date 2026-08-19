@@ -16,6 +16,7 @@ class LoginController extends GetxController {
   late Authmodel models;
   var isLoading = false.obs;
   var emailMessage = ''.obs;
+  var passwordMessage = ''.obs;
 
   var emailFocused = false.obs;
   var passwordFocused = false.obs;
@@ -40,6 +41,7 @@ class LoginController extends GetxController {
 
       if (apiLogin['statuscode'] == 200) {
         emailMessage.value = '';
+        passwordMessage.value = '';
 
         models = Authmodel(
           id: apiLogin['_id'],
@@ -51,8 +53,14 @@ class LoginController extends GetxController {
 
         Get.toNamed("/HOME");
       }
-      else{
-        emailMessage.value = 'email tidak ada';
+      else if (apiLogin['statuscode'] == 401) {
+        emailMessage.value = 'email salah';
+      }
+      else if (apiLogin['statuscode'] == 402) {
+        passwordMessage.value = 'password salah';
+      }
+      else {
+        emailMessage.value = 'Terjadi kesalahan';
       }
 
       print('Login dengan $email');

@@ -66,7 +66,7 @@ class _LoginscreenState extends State<Loginscreen> {
           ),
 
           Positioned(
-            top: 200,
+            top: 165,
             left: MediaQuery.of(context).size.width / 2 - 45,
             child: Container(
               height: 90,
@@ -80,7 +80,7 @@ class _LoginscreenState extends State<Loginscreen> {
           ),
 
           Positioned(
-            top: 205,
+            top: 170,
             left: MediaQuery.of(context).size.width / 2 - 40,
             child: Container(
               height: 80,
@@ -99,7 +99,7 @@ class _LoginscreenState extends State<Loginscreen> {
           ),
 
           Positioned(
-            top: 290,
+            top: 260,
             left: MediaQuery.of(context).size.width / 2 - 80,
             child: Container(
               height: 100,
@@ -117,7 +117,7 @@ class _LoginscreenState extends State<Loginscreen> {
           ),
 
           Positioned(
-            top: 280,
+            top: 270,
             left: MediaQuery.of(context).size.width / 2 - 150,
             bottom: 10,
             child: SingleChildScrollView(
@@ -223,6 +223,21 @@ class _LoginscreenState extends State<Loginscreen> {
                             ),
                           ),
                         ),
+                      ),
+                      SizedBox(height: 8),
+                      Obx(
+                        () => controller.passwordMessage.value.isNotEmpty
+                            ? Padding(
+                                padding: EdgeInsets.only(bottom: 8),
+                                child: Text(
+                                  controller.emailMessage.value,
+                                  style: TextStyle(
+                                    color: Colors.red,
+                                    fontSize: 13,
+                                  ),
+                                ),
+                              )
+                            : SizedBox.shrink(),
                       ),
                       SizedBox(height: 40),
                       Container(
