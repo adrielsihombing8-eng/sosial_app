@@ -36,10 +36,10 @@ class _HomeState extends State<Home> {
   //   save: false,
   // );
 
-    @override
+  @override
   void initState() {
     super.initState();
-    controller.loadMorePosts(); 
+    controller.loadMorePosts();
 
     scrollController.addListener(() {
       if (scrollController.position.pixels >=
@@ -94,39 +94,78 @@ class _HomeState extends State<Home> {
       body: Padding(
         padding: const EdgeInsets.only(top: 20.0),
         child: Obx(() {
-        if (controller.posts.isEmpty && controller.isLoading.value) {
-          return const Center(child: CircularProgressIndicator());
-        }
+          if (controller.posts.isEmpty && controller.isLoading.value) {
+            return const Center(child: CircularProgressIndicator());
+          }
 
-        return RefreshIndicator(
-          onRefresh: controller.refreshPosts,
-          child: ListView.builder(
-            controller:scrollController,
-            itemCount: controller.posts.length + (controller.hasMore.value ? 1 : 0),
-            itemBuilder: (context, index) {
-              if (index >= controller.posts.length) {
-                return const Padding(
-                  padding: EdgeInsets.all(16),
-                  child: Center(child: CircularProgressIndicator()),
+          if (controller.posts.isEmpty && !controller.isLoading.value) {
+            return LayoutBuilder(
+              builder: (context, constraints) {
+                return RefreshIndicator(
+                  onRefresh: controller.refreshPosts,
+                  child: ListView(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    children: [
+                      SizedBox(
+                        height: constraints.maxHeight,
+                        child: const Center(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(
+                                Icons.inbox_outlined,
+                                size: 64,
+                                color: Colors.grey,
+                              ),
+                              SizedBox(height: 12),
+                              Text(
+                                'Belum ada postingan',
+                                style: TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 16,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 );
-              }
+              },
+            );
+          }
 
-              final post = controller.posts[index];
-              return VisibilityDetector(
-            key: Key('post-${post.id}'),
-            onVisibilityChanged: (info) {
-              if (info.visibleFraction >= 0.5) {
-                controller.onPostVisible(post.id);
-              } else {
-                controller.onPostHidden(post.id);
-              }
-            },
-            child: Postcard(post: post),
+          return RefreshIndicator(
+            onRefresh: controller.refreshPosts,
+            child: ListView.builder(
+              controller: scrollController,
+              itemCount:
+                  controller.posts.length + (controller.hasMore.value ? 1 : 0),
+              itemBuilder: (context, index) {
+                if (index >= controller.posts.length) {
+                  return const Padding(
+                    padding: EdgeInsets.all(16),
+                    child: Center(child: CircularProgressIndicator()),
+                  );
+                }
+
+                final post = controller.posts[index];
+                return VisibilityDetector(
+                  key: Key('post-${post.id}'),
+                  onVisibilityChanged: (info) {
+                    if (info.visibleFraction >= 0.5) {
+                      controller.onPostVisible(post.id);
+                    } else {
+                      controller.onPostHidden(post.id);
+                    }
+                  },
+                  child: Postcard(post: post),
+                );
+              },
+            ),
           );
-            },
-          ),
-        );
-      }),
+        }),
       ),
     );
   }
