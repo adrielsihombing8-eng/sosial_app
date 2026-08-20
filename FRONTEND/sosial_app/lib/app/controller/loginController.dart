@@ -51,7 +51,7 @@ class LoginController extends GetxController {
 
         authController.setUser(models);
 
-        Get.toNamed("/HOME");
+        Get.toNamed("/DASHBOARD");
       }
       else if (apiLogin['statuscode'] == 401) {
         emailMessage.value = 'email salah';
@@ -61,6 +61,7 @@ class LoginController extends GetxController {
       }
       else {
         emailMessage.value = 'Terjadi kesalahan';
+        print('Terjadi kesalahan: ${apiLogin['message']}');
       }
 
       print('Login dengan $email');

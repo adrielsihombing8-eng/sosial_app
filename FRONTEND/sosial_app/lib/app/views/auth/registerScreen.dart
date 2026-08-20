@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/route_manager.dart';
 import 'package:get/state_manager.dart';
-import 'package:sosial_app/app/controller/register_controller.dart';
+import 'package:sosial_app/app/controller/registerController.dart';
 
 class Registerscreen extends StatefulWidget {
   const Registerscreen({super.key});

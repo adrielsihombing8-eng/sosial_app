@@ -92,6 +92,7 @@ exports.addContent = async (req, res, next) => {
 //loadcontent
 exports.loadcontent = async (req, res, next) => {
     try {
+        console.log("load content berhasil di deteksi");
         const { cursor, limit = 10 } = req.query;
         const query = cursor ? { _id: { $lt: cusor } } : {};
         const posts = await contentServices.loadContent(query);

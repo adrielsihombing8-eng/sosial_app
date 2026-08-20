@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:sosial_app/app/controller/register_controller.dart';
+import 'package:sosial_app/app/controller/registerController.dart';
 
 class RegisterBinding extends Bindings{
   @override

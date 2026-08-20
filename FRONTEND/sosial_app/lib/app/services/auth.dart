@@ -22,21 +22,32 @@ class _splashCheckerState extends State<splashChecker> {
     super.initState();
   }
 
-  Future<void> tokenChecker()async{
+  Future<void> tokenChecker() async {
     var token = await AuthStore.getToken();
+
+    if (token == null) {
+      if (!mounted) return;
+      Get.offAllNamed("/LOGIN");
+      return;
+    }
+    
     bool isValidToken = await Api.cekToken(token!);
 
     authController.loadDataUser();
 
-    if(!mounted) return;
-    
-    Get.toNamed("/HOME");
+    if (!mounted) return;
+
+    if (isValidToken) {
+      authController.loadDataUser();
+      Get.offAllNamed("/HOME");
+    } else {
+      await AuthStore.clear();
+      Get.offAllNamed("/LOGIN");
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: CircularProgressIndicator(),
-    );
+    return Scaffold(body: CircularProgressIndicator());
   }
 }

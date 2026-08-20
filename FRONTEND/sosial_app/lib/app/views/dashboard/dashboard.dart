@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_instance/src/bindings_interface.dart';
 import 'package:sosial_app/app/Routes/routes.dart';
-import 'package:sosial_app/app/bindings/Home_bindings.dart';
+import 'package:sosial_app/app/bindings/HomeBindings.dart';
+import 'package:sosial_app/app/bindings/ProfilBindings.dart';
+import 'package:sosial_app/app/bindings/SearchBindings.dart';
 import 'package:sosial_app/app/views/dashboard/pages/home.dart';
 import 'package:sosial_app/app/views/dashboard/pages/profil.dart';
 import 'package:sosial_app/app/views/dashboard/pages/searchUser.dart';
@@ -19,7 +21,8 @@ class _DashboardState extends State<Dashboard> {
 
   final List<Bindings> bindings = [
     HomeBindings(),
-    //lain lain
+    Searchbindings(),
+    Profilbindings()
   ];
 
   List<Widget> get widgetOption => <Widget>[

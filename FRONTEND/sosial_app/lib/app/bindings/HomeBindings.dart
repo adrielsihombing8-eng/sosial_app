@@ -1,5 +1,5 @@
 import 'package:get/instance_manager.dart';
-import 'package:sosial_app/app/controller/feed_controller.dart';
+import 'package:sosial_app/app/controller/feedController.dart';
 
 class HomeBindings extends Bindings{
   @override

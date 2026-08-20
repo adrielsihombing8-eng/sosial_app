@@ -4,7 +4,7 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/get_instance.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:sosial_app/app/Routes/routes.dart';
-import 'package:sosial_app/app/controller/login_controller.dart';
+import 'package:sosial_app/app/controller/loginController.dart';
 
 class Loginscreen extends StatefulWidget {
   const Loginscreen({super.key});
@@ -66,7 +66,7 @@ class _LoginscreenState extends State<Loginscreen> {
           ),
 
           Positioned(
-            top: 165,
+            top: 195,
             left: MediaQuery.of(context).size.width / 2 - 45,
             child: Container(
               height: 90,
@@ -80,7 +80,7 @@ class _LoginscreenState extends State<Loginscreen> {
           ),
 
           Positioned(
-            top: 170,
+            top: 200,
             left: MediaQuery.of(context).size.width / 2 - 40,
             child: Container(
               height: 80,
@@ -99,7 +99,7 @@ class _LoginscreenState extends State<Loginscreen> {
           ),
 
           Positioned(
-            top: 260,
+            top: 290,
             left: MediaQuery.of(context).size.width / 2 - 80,
             child: Container(
               height: 100,
@@ -117,7 +117,7 @@ class _LoginscreenState extends State<Loginscreen> {
           ),
 
           Positioned(
-            top: 270,
+            top: 290,
             left: MediaQuery.of(context).size.width / 2 - 150,
             bottom: 10,
             child: SingleChildScrollView(

@@ -52,6 +52,7 @@ exports.login = async (req, res, next) => {
             res.status(402).json({ messange: "invalid password" });
         }
     } catch (err) {
+        console.log(err);
         next(err);
     }
 };

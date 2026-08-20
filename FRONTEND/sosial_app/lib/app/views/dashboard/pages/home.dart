@@ -2,11 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:get/state_manager.dart';
-import 'package:http/http.dart';
-import 'package:intl/intl.dart';
-import 'package:sosial_app/app/controller/feed_controller.dart';
-import 'package:sosial_app/app/model/authModel.dart';
-import 'package:sosial_app/app/model/postModel.dart';
+import 'package:sosial_app/app/controller/feedController.dart';
 import 'package:sosial_app/app/views/widget/Postcard.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 

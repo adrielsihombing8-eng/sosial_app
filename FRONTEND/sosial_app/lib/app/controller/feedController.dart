@@ -19,14 +19,19 @@ class FeedController extends GetxController {
   Future<void> loadMorePosts() async {
     if (isLoading.value || !hasMore.value) return;
 
+    print('Loading more posts...');
     isLoading.value = true;
-    final response = await Api.getPosts(cursor: nextCursor);
+    try {
+      final response = await Api.getPosts(cursor: nextCursor);
 
-    posts.addAll(response.posts);
-    nextCursor = response.nextCursor;
-    hasMore.value = response.hasMore;
-
-    isLoading.value = false;
+      posts.addAll(response.posts);
+      nextCursor = response.nextCursor;
+      hasMore.value = response.hasMore;
+    } catch (e) {
+      print('Gagal load posts: $e');
+    } finally {
+      isLoading.value = false;
+    }
   }
 
   Future<void> refreshPosts() async {
